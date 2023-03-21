@@ -1,0 +1,16 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: auth-service
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+token:
+  expiration: 600000000
+  secret: secret
+
+  refresh:
+    expiration: 6000000000

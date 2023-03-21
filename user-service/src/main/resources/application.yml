@@ -1,0 +1,20 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: user-service
+  datasource:
+    #    url: jdbc:postgresql://localhost/event_service
+    url: jdbc:postgresql://localhost:5433/users
+    username: postgres
+    password: postgres
+  #    driver-class-name: org.postgresql.Driver
+  #    sql-script-encoding: UTF-8
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
