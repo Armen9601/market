@@ -2,11 +2,6 @@ package com.market.shopservice.dto;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 @Getter
 @Setter
 @AllArgsConstructor
@@ -15,6 +10,7 @@ import javax.persistence.Table;
 public class LogoDto {
 
     private Long id;
+    private Long companyId;
     private String filePath;
 
 }

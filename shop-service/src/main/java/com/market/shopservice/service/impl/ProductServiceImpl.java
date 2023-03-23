@@ -3,7 +3,10 @@ package com.market.shopservice.service.impl;
 import com.market.shopservice.dto.CompanyDto;
 import com.market.shopservice.dto.ProductDto;
 import com.market.shopservice.dto.PurchaseHistoryDto;
+import com.market.shopservice.entity.Activity;
 import com.market.shopservice.entity.Product;
+import com.market.shopservice.exception.HaveNotEnoughMoneyException;
+import com.market.shopservice.exception.ProductHasNotInStorageException;
 import com.market.shopservice.mapper.ProductMapper;
 import com.market.shopservice.repository.ProductRepository;
 import com.market.shopservice.service.CompanyService;
@@ -21,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -52,16 +56,36 @@ public class ProductServiceImpl implements ProductService {
         throw new RuntimeException("You can not add product");
     }
 
+    public ProductDto update(ProductDto productDto) {
+        findById(productDto.getId());
+        return productMapper.toDto(productRepository.save(productMapper.toEntity(productDto)));
+    }
+
+    @Override
+    public List<ProductDto> updateAll(List<ProductDto> productDto) {
+        List<Product> products = productRepository.saveAll(productMapper.toEntity(productDto));
+        return productMapper.toDto(products);
+    }
+
     @Override
     public ProductDto findById(Long id) {
         return productRepository.findById(id)
                 .map(productMapper::toDto)
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
     public List<ProductDto> findAll(PageRequest pageRequest) {
-        return productMapper.toDto(productRepository.findAll());
+        List<ProductDto> productDtos = productMapper.toDto(productRepository.findAll());
+        List<ProductDto> productDtoList = new ArrayList<>();
+        for (ProductDto productDto : productDtos) {
+            if (productDto.getCompany() != null && productDto.getCompany().getActivity() != Activity.BLOCKED) {
+                productDtoList.add(productDto);
+            } else if (productDto.getCompany() == null) {
+                productDtoList.add(productDto);
+            }
+        }
+        return productDtoList;
     }
 
     @Override
@@ -77,13 +101,14 @@ public class ProductServiceImpl implements ProductService {
     public PurchaseHistoryDto buy(User user, Long productId) {
         ProductDto productDto = findById(productId);
         if (productDto.getCount() > 0) {
-            if (user.getBalance() < productDto.getPrice()) {
-                throw new RuntimeException("You have not enough money");
+            UserDto byId = userClient.findById(user.getId());
+            if (byId.getBalance() < productDto.getPrice()) {
+                throw new HaveNotEnoughMoneyException();
             }
             PurchaseHistoryDto historyDto = PurchaseHistoryDto.builder()
                     .product(productDto)
                     .purchaseDate(LocalDateTime.now())
-                    .purchaseFrom(user.getId())
+                    .purchaseFrom(byId.getId())
                     .build();
             historyService.save(historyDto);
             productDto.setCount(productDto.getCount() - 1);
@@ -91,9 +116,16 @@ public class ProductServiceImpl implements ProductService {
                 transferProceedToCompany(productDto);
             }
             productRepository.save(productMapper.toEntity(productDto));
+            byId.setBalance(byId.getBalance() - productDto.getPrice());
+            userClient.update(byId);
             return historyDto;
         }
-        throw new RuntimeException("We have not this product in storage");
+        throw new ProductHasNotInStorageException();
+    }
+
+    @Override
+    public List<ProductDto> findByIds(List<Long> productIds) {
+        return productMapper.toDto(productRepository.findAllByIdIsIn(productIds));
     }
 
     private double commissionCalculating(double productPrice) {
@@ -103,9 +135,9 @@ public class ProductServiceImpl implements ProductService {
 
     private void transferProceedToCompany(ProductDto productDto) {
         double proceed = commissionCalculating(productDto.getPrice());
-        Long creatorId = productDto.getCompany().getCreatorId();
-//        UserDto companyCreator = userClient.findById(creatorId);
-//        companyCreator.setBalance(companyCreator.getBalance() + proceed);
-//        userClient.save(companyCreator);
+        Long id = productDto.getCompany().getCreatorId();
+        UserDto companyCreator = userClient.findById(id);
+        companyCreator.setBalance(companyCreator.getBalance() + proceed);
+        userClient.save(companyCreator);
     }
 }

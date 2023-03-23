@@ -1,6 +1,5 @@
 package com.market.shopservice.service;
 
-import com.market.shopservice.dto.CommentDto;
 import com.market.shopservice.dto.CompanyDto;
 import com.market.shopservice.entity.Activity;
 import com.market.shopservice.entity.Status;
@@ -22,4 +21,5 @@ public interface CompanyService {
 
     List<CompanyDto> findByUserId(Long userId);
 
+    CompanyDto update(CompanyDto byId);
 }

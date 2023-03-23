@@ -14,7 +14,13 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
+token:
+  expiration: 600000000
+  secret: secret
+
+  refresh:
+    expiration: 6000000000

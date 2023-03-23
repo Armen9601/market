@@ -22,8 +22,9 @@ public class Product {
     private double price;
     private int count;
     private int rating;
-    @ManyToOne
+    @OneToOne
     private Salary salary;
+    private double salaryAmount;
     @OneToMany
     private List<Comment> comment;
     @ElementCollection

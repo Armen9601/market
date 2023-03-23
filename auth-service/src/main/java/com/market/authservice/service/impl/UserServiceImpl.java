@@ -54,13 +54,7 @@ public class UserServiceImpl implements UserService {
             log.error(this.getClass().getName(), IncorrectEmailException.class);
             throw new IncorrectEmailException();
         }
-        UserDto byEmail = userClient.findByEmail(userDto.getEmail());
-        if (byEmail==null){
             saveUser(userDto);
-        }else {
-            throw new  EmailAlreadyExist();
-        }
-
     }
 
 

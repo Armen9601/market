@@ -4,6 +4,7 @@ import com.market.userservice.dto.UserDto;
 import com.market.userservice.entity.AccountStatus;
 import com.market.userservice.entity.User;
 import com.market.userservice.entity.UserRole;
+import com.market.userservice.exception.EmailRepeatingException;
 import com.market.userservice.mapper.UserMapper;
 import com.market.userservice.repo.UserRepository;
 import com.market.userservice.service.UserService;
@@ -23,6 +24,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto save(UserDto userDto) {
+        if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
+            throw new EmailRepeatingException();
+        }
         User saved = userRepository.save(userMapper.toEntity(userDto));
         return userMapper.toDto(saved);
     }
@@ -76,11 +80,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addBalance(User currentUser, Long userId, double sum) {
-        if (currentUser.getRole().equals(UserRole.ADMIN)){
+        if (currentUser.getRole().equals(UserRole.ADMIN)) {
             UserDto byId = findById(userId);
-            byId.setBalance(byId.getBalance()+sum);
+            byId.setBalance(byId.getBalance() + sum);
             User user = userMapper.toEntity(byId);
             userRepository.save(user);
         }
+    }
+
+    @Override
+    public UserDto update(UserDto userDto) {
+        User user = userMapper.toEntity(userDto);
+        return userMapper.toDto(userRepository.save(user));
     }
 }

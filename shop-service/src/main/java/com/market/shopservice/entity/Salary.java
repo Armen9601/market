@@ -19,7 +19,7 @@ public class Salary {
     private Long id;
     private double salaryCount;
     private int salaryDays;
-    @OneToMany
-    private List<Product> salaryProducts;
+    @ElementCollection
+    private List<Long> salaryProductsId;
 
 }

@@ -16,6 +16,6 @@ public class SalaryDto {
     private Long id;
     private double salaryCount;
     private int salaryDays;
-    private List<ProductDto> salaryProducts;
+    private List<Long> salaryProductsId;
 
 }

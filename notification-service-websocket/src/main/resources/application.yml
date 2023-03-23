@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: notification-service-websocket
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: notification
+#      uri: mongodb://localhost/notification
+
+
+server:
+  port: 8086

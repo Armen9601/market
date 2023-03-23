@@ -22,5 +22,6 @@ public class ReturnProduct {
     private Long purchasedFrom;
     private LocalDateTime returnTime;
     private ReturnStatus status;
+    private int count;
 
 }

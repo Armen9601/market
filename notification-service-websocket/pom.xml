@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <artifactId>notification-service-websocket</artifactId>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>
+              <artifactId>lombok</artifactId>
+              <groupId>org.projectlombok</groupId>
+            </exclude>
+          </excludes>
+        </configuration>
+        <groupId>org.springframework.boot</groupId>
+        <version>2.4.2</version>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <artifactId>spring-cloud-starter-bootstrap</artifactId>
+      <groupId>org.springframework.cloud</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>spring-cloud-starter-config</artifactId>
+      <groupId>org.springframework.cloud</groupId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-websocket</artifactId>
+      <version>5.3.15</version>
+    </dependency>
+
+
+    <dependency>
+      <artifactId>de.flapdoodle.embed.mongo</artifactId>
+      <groupId>de.flapdoodle.embed</groupId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.8.5</version>
+    </dependency>
+
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <artifactId>spring-boot-starter-web</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+
+    <dependency>
+      <artifactId>spring-boot-starter</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>springfox-swagger-ui</artifactId>
+      <groupId>io.springfox</groupId>
+      <version>3.0.0</version>
+    </dependency>
+    <dependency>
+      <artifactId>springfox-boot-starter</artifactId>
+      <groupId>io.springfox</groupId>
+      <version>3.0.0</version>
+    </dependency>
+    <dependency>
+      <artifactId>webjars-locator-core</artifactId>
+      <groupId>org.webjars</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>sockjs-client</artifactId>
+      <groupId>org.webjars</groupId>
+      <version>1.0.2</version>
+    </dependency>
+    <dependency>
+      <artifactId>stomp-websocket</artifactId>
+      <groupId>org.webjars</groupId>
+      <version>2.3.3</version>
+    </dependency>
+    <dependency>
+      <artifactId>bootstrap</artifactId>
+      <groupId>org.webjars</groupId>
+      <version>3.3.7</version>
+    </dependency>
+    <dependency>
+      <artifactId>jquery</artifactId>
+      <groupId>org.webjars</groupId>
+      <version>3.1.1-1</version>
+    </dependency>
+    <dependency>
+      <artifactId>spring-boot-starter-websocket</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>swagger-annotations</artifactId>
+      <groupId>io.swagger</groupId>
+      <scope>compile</scope>
+      <version>1.5.20</version>
+    </dependency>
+    <dependency>
+      <artifactId>modelmapper</artifactId>
+      <groupId>org.modelmapper</groupId>
+      <scope>compile</scope>
+      <version>3.0.0</version>
+    </dependency>
+
+    <dependency>
+      <artifactId>spring-boot-starter-data-mongodb</artifactId>
+      <groupId>org.springframework.boot</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>jackson-databind</artifactId>
+      <groupId>com.fasterxml.jackson.core</groupId>
+    </dependency>
+      <dependency>
+          <groupId>javax.enterprise</groupId>
+          <artifactId>cdi-api</artifactId>
+          <version>1.0</version>
+      </dependency>
+  </dependencies>
+  <dependencyManagement>
+    <dependencies>
+
+      <dependency>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <groupId>org.springframework.cloud</groupId>
+        <scope>import</scope>
+        <type>pom</type>
+        <version>${spring-cloud.version}</version>
+      </dependency>
+
+    </dependencies>
+
+  </dependencyManagement>
+  <groupId>com.market</groupId>
+  <modelVersion>4.0.0</modelVersion>
+
+  <name>notification-service-websocket</name>
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.4.2</version>
+    <relativePath/> <!-- lookup parent from repository -->
+  </parent>
+
+  <properties>
+    <java.version>11</java.version>
+    <spring-cloud.version>2020.0.2</spring-cloud.version>
+    <spring.boot.version>2.4.2</spring.boot.version>
+    <testcontainers.version>1.16.0</testcontainers.version>
+  </properties>
+
+
+  <version>0.0.1-SNAPSHOT</version>
+
+</project>

@@ -23,4 +23,6 @@ public interface UserService {
 
     void addBalance(User user, Long userId, double sum);
 
+    UserDto update(UserDto userDto);
+
 }

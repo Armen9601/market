@@ -13,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,7 +43,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public void blockOrActivateCompany(Long id, User user,Activity activity) {
+    public void blockOrActivateCompany(Long id, User user, Activity activity) {
         if (user.getRole().equals(ADMIN)) {
             CompanyDto companyDto = findById(id);
             companyDto.setActivity(activity);
@@ -57,7 +56,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public void approveCompany(Long id, User user, Status status) {
         CompanyDto companyDto = findById(id);
-        if (user.getRole().equals(ADMIN)&& companyDto.getStatus().equals(Status.PENDING)) {
+        if (user.getRole().equals(ADMIN) && companyDto.getStatus().equals(Status.PENDING)) {
             companyDto.setStatus(status);
             companyRepository.save(companyMapper.toEntity(companyDto));
         } else {
@@ -79,5 +78,11 @@ public class CompanyServiceImpl implements CompanyService {
                 .stream()
                 .map(companyMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public CompanyDto update(CompanyDto companyDto) {
+        CompanyDto byId = findById(companyDto.getId());
+        return companyMapper.toDto(companyRepository.save(companyMapper.toEntity(byId)));
     }
 }

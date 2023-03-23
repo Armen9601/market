@@ -1,6 +1,7 @@
 package com.market.userservice.controller;
 
 import com.market.userservice.dto.UserDto;
+import com.market.userservice.entity.User;
 import com.market.userservice.security.CurrentUser;
 import com.market.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +22,13 @@ public class UserController {
         return userService.save(userDto);
     }
 
-    @GetMapping("/id/{id}")
-    public UserDto findById(@PathVariable Long id) {
+   @PutMapping(value = "/")
+    public UserDto update(@RequestBody UserDto userDto) {
+        return userService.update(userDto);
+    }
+
+    @GetMapping("/{id}")
+    public UserDto findById(@PathVariable("id") Long id) {
         return userService.findById(id);
     }
 

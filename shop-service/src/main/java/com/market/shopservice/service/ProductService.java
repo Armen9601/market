@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ProductService {
 
-    ProductDto add(User user,ProductDto productDto);
+    ProductDto add(User user, ProductDto productDto);
 
     ProductDto findById(Long id);
 
@@ -18,5 +18,11 @@ public interface ProductService {
     void delete(Long id);
 
     PurchaseHistoryDto buy(User user, Long productId);
+
+    ProductDto update(ProductDto productDto);
+
+    List<ProductDto> updateAll(List<ProductDto> productDto);
+
+    List<ProductDto> findByIds(List<Long> productIds);
 
 }
